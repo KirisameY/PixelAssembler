@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://bq5bbnrq1ymvg"]
+
+[sub_resource type="GDScript" id="GDScript_mf4mk"]
+script/source = "extends GraphEdit
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	#add_valid_connection_type(0, 0)
+	#print(is_valid_connection_type(0, 0))
+	pass # Replace with function body.
+
+func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	var a = connections
+	a.append({
+		from_node = from_node,
+		from_port = from_port,
+		to_node = to_node,
+		to_port = to_port,
+		keep_alive = true
+	})
+	connections = a
+	print(connections)
+	pass # Replace with function body.
+
+func _on_disconnection_request(from_node, from_port, to_node, to_port):
+	var a = connections
+	a.erase({
+		from_node = from_node,
+		from_port = from_port,
+		to_node = to_node,
+		to_port = to_port,
+		keep_alive = true
+	})
+	connections = a
+	print(connections)
+	pass # Replace with function body.
+"
+
+[node name="Control" type="Control" unique_id=537009600]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="GraphEdit" type="GraphEdit" parent="." unique_id=2023007513]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 40.0
+offset_right = 1093.0
+offset_bottom = 602.0
+grid_pattern = 1
+right_disconnects = true
+type_names = {
+0: ""
+}
+connections = Array[Dictionary]([{
+"from_node": &"GraphNode2",
+"from_port": 0,
+"keep_alive": true,
+"to_node": &"GraphNode",
+"to_port": 0
+}])
+minimap_enabled = false
+show_zoom_label = true
+script = SubResource("GDScript_mf4mk")
+
+[node name="GraphNode" type="GraphNode" parent="GraphEdit" unique_id=1646491860]
+layout_mode = 0
+offset_left = 614.0
+offset_top = 118.0
+offset_right = 797.9999
+offset_bottom = 256.00006
+mouse_filter = 1
+position_offset = Vector2(614, 118)
+resizable = true
+title = "0sdf"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.1764706, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Label" type="Label" parent="GraphEdit/GraphNode" unique_id=1519522721]
+layout_mode = 2
+text = "Asd"
+
+[node name="GraphNode3" type="GraphNode" parent="GraphEdit" unique_id=345686640]
+layout_mode = 0
+offset_left = 603.0
+offset_top = 303.0
+offset_right = 786.9999
+offset_bottom = 441.00006
+mouse_filter = 1
+position_offset = Vector2(603, 303)
+resizable = true
+title = "0sdf"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.1764706, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Label" type="Label" parent="GraphEdit/GraphNode3" unique_id=2040248056]
+layout_mode = 2
+text = "Asd"
+
+[node name="GraphNode2" type="GraphNode" parent="GraphEdit" unique_id=818893966]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 128.0
+offset_right = 503.99988
+offset_bottom = 266.00006
+mouse_filter = 1
+position_offset = Vector2(320, 128)
+resizable = true
+title = "0sdf"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Label" type="Label" parent="GraphEdit/GraphNode2" unique_id=1826812517]
+layout_mode = 2
+text = "Asd"
+
+[connection signal="connection_request" from="GraphEdit" to="GraphEdit" method="_on_connection_request"]
+[connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_disconnection_request"]
