@@ -1,41 +1,6 @@
 [gd_scene format=3 uid="uid://bq5bbnrq1ymvg"]
 
-[sub_resource type="GDScript" id="GDScript_mf4mk"]
-script/source = "extends GraphEdit
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	#add_valid_connection_type(0, 0)
-	#print(is_valid_connection_type(0, 0))
-	pass # Replace with function body.
-
-func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	var a = connections
-	a.append({
-		from_node = from_node,
-		from_port = from_port,
-		to_node = to_node,
-		to_port = to_port,
-		keep_alive = true
-	})
-	connections = a
-	print(connections)
-	pass # Replace with function body.
-
-func _on_disconnection_request(from_node, from_port, to_node, to_port):
-	var a = connections
-	a.erase({
-		from_node = from_node,
-		from_port = from_port,
-		to_node = to_node,
-		to_port = to_port,
-		keep_alive = true
-	})
-	connections = a
-	print(connections)
-	pass # Replace with function body.
-"
+[ext_resource type="Script" uid="uid://b10d450lg7csw" path="res://GUI/GraphMaps/MainGraphMap.cs" id="1_37kl0"]
 
 [node name="Control" type="Control" unique_id=537009600]
 layout_mode = 3
@@ -61,7 +26,7 @@ connections = Array[Dictionary]([{
 }])
 minimap_enabled = false
 show_zoom_label = true
-script = SubResource("GDScript_mf4mk")
+script = ExtResource("1_37kl0")
 
 [node name="GraphNode" type="GraphNode" parent="GraphEdit" unique_id=1646491860]
 layout_mode = 0

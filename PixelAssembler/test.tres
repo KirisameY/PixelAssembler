@@ -1,0 +1,8 @@
+[gd_resource type="VisualShader" format=3 uid="uid://bva7hajig6j1h"]
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_rwyx4"]
+
+[resource]
+nodes/vertex/0/position = Vector2(380, 180)
+nodes/vertex/2/node = SubResource("VisualShaderNodeReroute_rwyx4")
+nodes/vertex/2/position = Vector2(180, 180)
