@@ -1,11 +1,25 @@
 <Project Sdk="Godot.NET.Sdk/4.6.3">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <LangVersion>14</LangVersion>
-    <Nullable>enable</Nullable>
-    <Version>0.0.1</Version>
-    <Authors>KirisameY</Authors>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <LangVersion>14</LangVersion>
+        <Nullable>enable</Nullable>
+        <Version>0.0.1</Version>
+        <Authors>KirisameY</Authors>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Folder Include="GraphNodes\Main\"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="**/*.gd"/>
+        <None Include="**/*.tscn"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="KirisameY.Registration" Version="0.1.0"/>
+        <PackageReference Include="KirisameY.Relinq" Version="0.1.0"/>
+    </ItemGroup>
 </Project>
