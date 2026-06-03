@@ -3,22 +3,19 @@
 [ext_resource type="Script" uid="uid://du8moqatoeie8" path="res://GUI/GraphNodeParts/BiLabel.cs" id="1_4qod1"]
 
 [node name="BiLabel" type="Control" unique_id=1624706221]
-custom_minimum_size = Vector2(68, 23)
+custom_minimum_size = Vector2(14, 23)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 2.0
 offset_bottom = 23.0
 size_flags_horizontal = 3
 script = ExtResource("1_4qod1")
-TextL = "asd"
-TextR = "dsa"
 
 [node name="L" type="Label" parent="." unique_id=1377253075]
 layout_mode = 1
 offset_right = 1.0
 offset_bottom = 23.0
 size_flags_horizontal = 3
-text = "asd"
 
 [node name="R" type="Label" parent="." unique_id=569508316]
 layout_mode = 1
@@ -29,7 +26,6 @@ offset_left = -1.0
 offset_bottom = 23.0
 grow_horizontal = 0
 size_flags_horizontal = 3
-text = "dsa"
 horizontal_alignment = 2
 
 [connection signal="resized" from="L" to="." method="SubLabelResized"]

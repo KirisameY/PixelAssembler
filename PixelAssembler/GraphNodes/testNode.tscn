@@ -9,7 +9,7 @@ slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
 slot/0/left_icon = null
-slot/0/right_enabled = false
+slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
@@ -18,64 +18,19 @@ slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
-slot/1/right_enabled = false
+slot/1/right_enabled = true
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-slot/2/left_enabled = false
-slot/2/left_type = 0
-slot/2/left_color = Color(1, 1, 1, 1)
-slot/2/left_icon = null
-slot/2/right_enabled = true
-slot/2/right_type = 0
-slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = null
-slot/2/draw_stylebox = true
-slot/3/left_enabled = false
-slot/3/left_type = 0
-slot/3/left_color = Color(1, 1, 1, 1)
-slot/3/left_icon = null
-slot/3/right_enabled = false
-slot/3/right_type = 0
-slot/3/right_color = Color(1, 1, 1, 1)
-slot/3/right_icon = null
-slot/3/draw_stylebox = true
-slot/4/left_enabled = false
-slot/4/left_type = 0
-slot/4/left_color = Color(1, 1, 1, 1)
-slot/4/left_icon = null
-slot/4/right_enabled = false
-slot/4/right_type = 0
-slot/4/right_color = Color(1, 1, 1, 1)
-slot/4/right_icon = null
-slot/4/draw_stylebox = true
-slot/5/left_enabled = false
-slot/5/left_type = 0
-slot/5/left_color = Color(1, 1, 1, 1)
-slot/5/left_icon = null
-slot/5/right_enabled = false
-slot/5/right_type = 0
-slot/5/right_color = Color(1, 1, 1, 1)
-slot/5/right_icon = null
-slot/5/draw_stylebox = true
-
-[node name="Label" type="Label" parent="." unique_id=813865397]
-layout_mode = 2
-text = "a"
-
-[node name="Label2" type="Label" parent="." unique_id=2116024130]
-layout_mode = 2
-text = "s"
-
-[node name="Label3" type="Label" parent="." unique_id=747979480]
-layout_mode = 2
-
-[node name="Label4" type="Label" parent="." unique_id=1693608705]
-layout_mode = 2
 
 [node name="BiLabel" parent="." unique_id=1624706221 instance=ExtResource("1_f5x20")]
+custom_minimum_size = Vector2(50, 23)
 layout_mode = 2
+TextL = "a"
+TextR = "dsa"
 
 [node name="BiLabel2" parent="." unique_id=298812910 instance=ExtResource("1_f5x20")]
+custom_minimum_size = Vector2(41, 23)
 layout_mode = 2
+TextR = "dsa"
