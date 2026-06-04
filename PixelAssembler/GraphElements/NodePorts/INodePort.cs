@@ -15,22 +15,16 @@ public interface INodePort
 
 public interface INodeInPort : INodePort
 {
-    public INodeConnectionTo? Connection { get; }
-}
+    public IReadOnlyList<INodeConnectionTo> Connections { get; }
 
-public interface INodeInPort<out T> : INodeInPort, IUpdateRequester<T>
-{
-    public new INodeConnectionTo<T>? Connection { get; }
-    INodeConnectionTo? INodeInPort.Connection => Connection;
+    internal bool AddConnection(INodeConnectionTo connection);
+    internal bool RemoveConnection(INodeConnectionTo connection);
 }
 
 public interface INodeOutPort : INodePort
 {
     public IReadOnlyList<INodeConnectionFrom> Connections { get; }
-}
 
-public interface INodeOutPort<in T> : INodeOutPort, IUpdateNotifier<T>
-{
-    public new IReadOnlyList<INodeConnectionFrom<T>> Connections { get; }
-    IReadOnlyList<INodeConnectionFrom> INodeOutPort.Connections => Connections;
+    internal bool AddConnection(INodeConnectionFrom connection);
+    internal bool RemoveConnection(INodeConnectionFrom connection);
 }

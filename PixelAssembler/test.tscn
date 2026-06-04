@@ -16,6 +16,19 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_DRAW:
 		$ConnectionLayer.queue_redraw.call_deferred()
+
+
+
+func _on_connection_request(from_node, from_port, to_node, to_port):
+	print(\"connection: \", from_node, from_port, to_node, to_port)
+	connect_node(from_node, from_port, to_node, to_port)
+	pass # Replace with function body.
+
+
+func _on_disconnection_request(from_node, from_port, to_node, to_port):
+	print(\"disconnection: \", from_node, from_port, to_node, to_port)
+	disconnect_node(from_node, from_port, to_node, to_port)
+	pass # Replace with function body.
 "
 
 [sub_resource type="GDScript" id="GDScript_8uh7m"]
@@ -241,3 +254,30 @@ slot/0/draw_stylebox = true
 [node name="Label" type="Label" parent="GraphEdit2/GraphNode2" unique_id=1511063652]
 layout_mode = 2
 text = "Asd"
+
+[node name="GraphNode4" type="GraphNode" parent="GraphEdit2" unique_id=1332687550]
+layout_mode = 0
+offset_left = 203.0
+offset_top = 304.0
+offset_right = 386.99988
+offset_bottom = 442.00006
+mouse_filter = 1
+position_offset = Vector2(203, 304)
+resizable = true
+title = "0sdf"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Label" type="Label" parent="GraphEdit2/GraphNode4" unique_id=1832729024]
+layout_mode = 2
+text = "Asd"
+
+[connection signal="connection_request" from="GraphEdit2" to="GraphEdit2" method="_on_connection_request"]
+[connection signal="disconnection_request" from="GraphEdit2" to="GraphEdit2" method="_on_disconnection_request"]

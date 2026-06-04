@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace PixelAssembler.GraphElements;
 
-public interface IUpdateRequester<out T>
+public interface IValueUpdateRequester<T>
 {
-    public void RequestUpdate();
-    public event EventHandler<T> UpdateNotified;
+    public Task<T>? RequestUpdate();
+    public event Action<T>? UpdateNotified;
 }
 
-public interface IUpdateNotifier<in T>
+public interface IValueUpdateNotifier<T>
 {
     public void NotifyUpdated(T newValue);
-    public event EventHandler UpdateRequested;
+    public Func<Task<T>?>? UpdateRequested { set; }
 }
