@@ -10,10 +10,6 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <Folder Include="GraphNodes\Main\"/>
-    </ItemGroup>
-    
-    <ItemGroup>
         <None Include="**/*.gd"/>
         <None Include="**/*.tscn"/>
     </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace PixelAssembler.GraphNodes;
+namespace PixelAssembler.GraphElements.GraphNodes;
 
 public partial class PaGraphNode : GraphNode
 {

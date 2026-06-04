@@ -3,8 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://sy3rtb341hlv" path="res://GUI/GraphNodeParts/BiLabel.tscn" id="1_f5x20"]
 
 [node name="Test" type="GraphNode" unique_id=1635123935]
-offset_right = 169.0
-offset_bottom = 157.0
+title = "Test"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -25,12 +24,12 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 
 [node name="BiLabel" parent="." unique_id=1624706221 instance=ExtResource("1_f5x20")]
-custom_minimum_size = Vector2(50, 23)
+custom_minimum_size = Vector2(77, 23)
 layout_mode = 2
-TextL = "a"
+TextL = "adsa"
 TextR = "dsa"
 
 [node name="BiLabel2" parent="." unique_id=298812910 instance=ExtResource("1_f5x20")]
-custom_minimum_size = Vector2(41, 23)
+custom_minimum_size = Vector2(68, 23)
 layout_mode = 2
-TextR = "dsa"
+TextR = "dsaasd"
