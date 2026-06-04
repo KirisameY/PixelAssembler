@@ -1,16 +1,27 @@
 ﻿using System.Collections.Generic;
 
 using PixelAssembler.GraphElements.Connections;
+using PixelAssembler.Types.ValueTypes;
 
 namespace PixelAssembler.GraphElements.NodePorts;
 
-public interface IValueInPort<T> : INodeInPort, IValueUpdateRequester<T>
+public interface IValuePort : INodePort
 {
-    public IValueConnectionTo<T>? Connection { get; }
+    public IValueType Type { get; }
 }
 
-public interface IValueOutPort<T> : INodeOutPort, IValueUpdateNotifier<T>
+public interface IValueInPort : IValuePort, INodeSingleInPort;
+
+public interface IValueInPort<T> : IValueInPort, IValueUpdateRequester<T>
 {
-    public new IReadOnlyList<IValueConnectionFrom<T>> Connections { get; }
-    IReadOnlyList<INodeConnectionFrom> INodeOutPort.Connections => Connections;
+    public new IValueConnectionTo<T>? ConnectionFrom { get; }
+    INodeConnection? INodeSingleInPort.ConnectionFrom => ConnectionFrom;
+}
+
+public interface IValueOutPort : IValuePort, INodeOutPort;
+
+public interface IValueOutPort<T> : IValueOutPort, IValueUpdateNotifier<T>
+{
+    public new IReadOnlyList<IValueConnectionFrom<T>> ConnectionsTo { get; }
+    IReadOnlyList<INodeConnection> INodeOutPort.ConnectionsTo => ConnectionsTo;
 }

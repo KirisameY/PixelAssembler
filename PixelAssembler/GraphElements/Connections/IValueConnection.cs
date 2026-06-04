@@ -2,16 +2,16 @@
 
 namespace PixelAssembler.GraphElements.Connections;
 
-public interface IValueConnectionFrom<T> : INodeConnectionFrom, IValueUpdateNotifier<T>
+public interface IValueConnectionFrom<T> : INodeConnection, IValueUpdateNotifier<T>
 {
     public new IValueOutPort<T> From { get; }
-    INodeOutPort INodeConnectionFrom.From => From;
+    INodeOutPort INodeConnection.From => From;
 }
 
-public interface IValueConnectionTo<T> : INodeConnectionTo, IValueUpdateRequester<T>
+public interface IValueConnectionTo<T> : INodeConnection, IValueUpdateRequester<T>
 {
     public new IValueInPort<T> To { get; }
-    INodeInPort INodeConnectionTo.To => To;
+    INodeInPort INodeConnection.To => To;
 }
 
-public interface IValueConnection<TFrom, TTo> : INodeConnection, IValueConnectionFrom<TFrom>, IValueConnectionTo<TTo>;
+public interface IValueConnection<TFrom, TTo> : IValueConnectionFrom<TFrom>, IValueConnectionTo<TTo>;

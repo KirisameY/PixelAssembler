@@ -19,24 +19,33 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
     public uint Index => index;
 
     [field: AllowNull, MaybeNull]
-    IReadOnlyList<INodeConnectionTo> INodeInPort.Connections => field ??= new Nullable2List<INodeConnectionTo>(() => Connection);
+    IReadOnlyList<INodeConnection> INodeInPort.ConnectionsFrom => field ??= new Nullable2List<INodeConnection>(() => ConnectionFrom);
 
-    public IValueConnectionTo<T>? Connection { get; private set; }
+    public IValueConnectionTo<T>? ConnectionFrom { get; private set; }
 
-    public bool AddConnection(INodeConnectionTo connection)
+    public bool TryCreateConnectionFrom(INodeOutPort from, [NotNullWhen(true)] out INodeConnection? connection)
     {
-        if (Connection is not null) return false;
+        connection = null;
+        if (from is not IValueOutPort valueOutPort) return false;
+        // todo: 创建connection
+        throw new NotImplementedException();
+        return true;
+    }
+
+    public bool AddConnection(INodeConnection connection)
+    {
+        if (ConnectionFrom is not null) return false;
         if (connection is not IValueConnectionTo<T> valueConnection) return false;
-        Connection = valueConnection;
+        ConnectionFrom = valueConnection;
 
         valueConnection.UpdateNotified += value => UpdateNotified?.Invoke(value);
         return true;
     }
 
-    public bool RemoveConnection(INodeConnectionTo connection)
+    public bool RemoveConnection(INodeConnection connection)
     {
-        if (Connection != connection) return false;
-        Connection = null;
+        if (ConnectionFrom != connection) return false;
+        ConnectionFrom = null;
 
         return true;
     }
@@ -44,7 +53,7 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
 
     public Task<T>? RequestUpdate()
     {
-        return Connection?.RequestUpdate();
+        return ConnectionFrom?.RequestUpdate();
     }
 
     public event Action<T>? UpdateNotified;
@@ -59,12 +68,12 @@ public class ValueOutPort<T>(IValueType type, PaGraphNode parent, uint index, IR
 
     private readonly List<IValueConnectionFrom<T>> _connections = [];
 
-    public IReadOnlyList<IValueConnectionFrom<T>> Connections
+    public IReadOnlyList<IValueConnectionFrom<T>> ConnectionsTo
     {
         get => field ??= _connections.AsReadOnly();
     } = connections;
 
-    public bool AddConnection(INodeConnectionFrom connection)
+    public bool AddConnection(INodeConnection connection)
     {
         if (connection is not IValueConnectionFrom<T> valueConnection) return false;
         _connections.Add(valueConnection);
@@ -73,7 +82,7 @@ public class ValueOutPort<T>(IValueType type, PaGraphNode parent, uint index, IR
         return true;
     }
 
-    public bool RemoveConnection(INodeConnectionFrom connection)
+    public bool RemoveConnection(INodeConnection connection)
     {
         if (connection is not IValueConnectionFrom<T> valueConnection) return false;
         if (!_connections.Remove(valueConnection)) return false;
@@ -84,7 +93,7 @@ public class ValueOutPort<T>(IValueType type, PaGraphNode parent, uint index, IR
 
     public void NotifyUpdated(T newValue)
     {
-        Connections.ForEach(connection => connection.NotifyUpdated(newValue));
+        ConnectionsTo.ForEach(connection => connection.NotifyUpdated(newValue));
     }
 
     public Func<Task<T>?>? UpdateRequested { private get; set; }
