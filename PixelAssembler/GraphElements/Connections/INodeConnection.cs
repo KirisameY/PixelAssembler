@@ -1,6 +1,4 @@
-﻿using System;
-
-using PixelAssembler.GraphElements.NodePorts;
+﻿using PixelAssembler.GraphElements.NodePorts;
 
 namespace PixelAssembler.GraphElements.Connections;
 

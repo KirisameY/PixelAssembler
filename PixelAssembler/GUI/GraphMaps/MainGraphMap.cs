@@ -1,6 +1,4 @@
-﻿using System;
-
-using Godot;
+﻿using Godot;
 
 namespace PixelAssembler.GUI.GraphMaps;
 
