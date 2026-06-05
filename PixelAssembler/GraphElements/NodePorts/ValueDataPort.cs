@@ -27,8 +27,10 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
     {
         connection = null;
         if (from is not IValueOutPort valueOutPort) return false;
-        // todo: 创建connection
-        throw new NotImplementedException();
+
+        if (!IValueType.TryGetConversion(valueOutPort.Type, Type, out var conversion)) return false;
+        connection = conversion.Invoke(valueOutPort, this);
+
         return true;
     }
 
