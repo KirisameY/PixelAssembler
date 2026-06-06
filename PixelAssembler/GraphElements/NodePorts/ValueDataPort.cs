@@ -29,7 +29,7 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
         if (from is not IValueOutPort valueOutPort) return false;
 
         if (!IValueType.TryGetConversion(valueOutPort.Type, Type, out var conversion)) return false;
-        connection = conversion.Invoke(valueOutPort, this);
+        connection = conversion.CreateConnection(valueOutPort, this);
 
         return true;
     }

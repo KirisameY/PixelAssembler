@@ -6,15 +6,15 @@ namespace PixelAssembler.Types.ValueTypes.BasicTypes;
 
 public partial class BaseValueType(
     Type nativeType,
-    IEnumerable<KeyValuePair<Type, ConvertConnectFunc>> convertFrom,
-    IEnumerable<KeyValuePair<Type, ConvertConnectFunc>> convertTo
+    IEnumerable<KeyValuePair<Type, IValueTypeConversion>> convertFrom,
+    IEnumerable<KeyValuePair<Type, IValueTypeConversion>> convertTo
 ) : IValueType
 {
     public Type NativeType => nativeType;
 
-    private FrozenDictionary<Type, ConvertConnectFunc> ConvertFrom { get; } = convertFrom.ToFrozenDictionary();
-    private FrozenDictionary<Type, ConvertConnectFunc> ConvertTo { get; } = convertTo.ToFrozenDictionary();
+    private FrozenDictionary<Type, IValueTypeConversion> ConvertFrom { get; } = convertFrom.ToFrozenDictionary();
+    private FrozenDictionary<Type, IValueTypeConversion> ConvertTo { get; } = convertTo.ToFrozenDictionary();
 
-    public ConvertConnectFunc? GetConversionFrom(IValueType from) => ConvertFrom.GetValueOrDefault(from.NativeType);
-    public ConvertConnectFunc? GetConversionTo(IValueType to)=> ConvertTo.GetValueOrDefault(to.NativeType);
+    public IValueTypeConversion? GetConversionFrom(IValueType from) => ConvertFrom.GetValueOrDefault(from.NativeType);
+    public IValueTypeConversion? GetConversionTo(IValueType to)=> ConvertTo.GetValueOrDefault(to.NativeType);
 }

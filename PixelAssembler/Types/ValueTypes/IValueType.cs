@@ -7,12 +7,15 @@ public interface IValueType
 {
     public Type NativeType { get; }
 
-    public ConvertConnectFunc? GetConversionFrom(IValueType from);
-    public ConvertConnectFunc? GetConversionTo(IValueType to);
+    public bool CanSkipCheckOtherToSelf => false;
 
-    public static bool TryGetConversion(IValueType from, IValueType to, [NotNullWhen(true)] out ConvertConnectFunc? connectionCreate)
+    public IValueTypeConversion? GetConversionFrom(IValueType from);
+    public IValueTypeConversion? GetConversionTo(IValueType to);
+
+    public static bool TryGetConversion(IValueType from, IValueType to, [NotNullWhen(true)] out IValueTypeConversion? conversion)
     {
-        connectionCreate = to.GetConversionFrom(from) ?? from.GetConversionTo(to);
-        return connectionCreate is not null;
+        conversion = to.GetConversionFrom(from);
+        if (!to.CanSkipCheckOtherToSelf) conversion ??= from.GetConversionTo(to);
+        return conversion is not null;
     }
 }

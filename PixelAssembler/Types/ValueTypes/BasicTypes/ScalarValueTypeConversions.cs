@@ -7,21 +7,22 @@ namespace PixelAssembler.Types.ValueTypes.BasicTypes;
 
 public abstract partial class ScalarValueType
 {
-    protected static FrozenDictionary<Type, Func<ScalarValueType, ConvertConnectFunc>> ConvertFrom { get; } = new List<
-        KeyValuePair<Type, Func<ScalarValueType, ConvertConnectFunc>>>
+    protected static FrozenDictionary<Type, IValueTypeConversionTo<IConvertible>> GeneralConversionsFrom { get; } = new List<
+        KeyValuePair<Type, IValueTypeConversionTo<IConvertible>>>
     {
-        //
+        CreateGeneralConversionFrom<bool>(b => b ? 1 : 0),
     }.ToFrozenDictionary();
-    protected static FrozenDictionary<Type, Func<ScalarValueType, ConvertConnectFunc>> ConvertTo { get; } = new List<
-        KeyValuePair<Type, Func<ScalarValueType, ConvertConnectFunc>>>
+    protected static FrozenDictionary<Type, IValueTypeConversionFrom<IConvertible>> GeneralConversionsTo { get; } = new List<
+        KeyValuePair<Type, IValueTypeConversionFrom<IConvertible>>>
     {
-        CreateConnectionFactoryTo(c=>c.ToString(CultureInfo.InvariantCulture))
+        CreateGeneralConversionTo(c => c.ToString(CultureInfo.InvariantCulture)),
+        CreateGeneralConversionTo(c => c.ToBoolean(CultureInfo.InvariantCulture)),
     }.ToFrozenDictionary();
 
 
-    public static KeyValuePair<Type, Func<ScalarValueType, ConvertConnectFunc>> CreateConnectionFactoryFrom<TFrom>(Func<TFrom, IConvertible> converter) =>
-        new(typeof(TFrom), type => type.FillConnectionFactoryFrom(converter));
+    public static KeyValuePair<Type, IValueTypeConversionTo<IConvertible>> CreateGeneralConversionFrom<TFrom>(Func<TFrom, IConvertible> converter) =>
+        new(typeof(TFrom), ValueTypeConversion.Create(converter));
 
-    public static KeyValuePair<Type, Func<ScalarValueType, ConvertConnectFunc>> CreateConnectionFactoryTo<TTo>(Func<IConvertible, TTo> converter) =>
-        new(typeof(TTo), type => type.FillConnectionFactoryTo(converter));
+    public static KeyValuePair<Type, IValueTypeConversionFrom<IConvertible>> CreateGeneralConversionTo<TTo>(Func<IConvertible, TTo> converter) =>
+        new(typeof(TTo), ValueTypeConversion.Create(converter));
 }

@@ -7,42 +7,55 @@ public abstract partial class ScalarValueType : IValueType
 {
     public abstract Type NativeType { get; }
 
-    public abstract ConvertConnectFunc? GetConversionFrom(IValueType from);
+    public abstract IValueTypeConversion? GetConversionFrom(IValueType from);
 
-    public abstract ConvertConnectFunc? GetConversionTo(IValueType to);
+    public abstract IValueTypeConversion? GetConversionTo(IValueType to);
 
-    public abstract ConvertConnectFunc FillConnectionFactoryFrom<T>(Func<T, IConvertible> convertPrefix);
-    public abstract ConvertConnectFunc FillConnectionFactoryTo<T>(Func<IConvertible, T> convertSuffix);
+    public abstract IValueTypeConversionFrom<IConvertible> ConversionFromGeneral { get; }
+    public abstract IValueTypeConversionTo<IConvertible> ConversionToGeneral { get; }
 }
 
-public sealed class ScalarValueType<T>(Func<IConvertible, T> fromGeneral, Func<T, IConvertible> toGeneral) : ScalarValueType
+public sealed class ScalarValueType<T>(IValueTypeConversion<IConvertible, T> fromGeneral, IValueTypeConversion<T, IConvertible> toGeneral) : ScalarValueType, IValueType
 {
     public override Type NativeType => typeof(T);
 
-    public override ConvertConnectFunc? GetConversionFrom(IValueType from)
+    public bool CanSkipCheckOtherToSelf => true;
+
+
+    public override IValueTypeConversion<IConvertible, T> ConversionFromGeneral => fromGeneral;
+    public override IValueTypeConversion<T, IConvertible> ConversionToGeneral => toGeneral;
+
+
+    public override IValueTypeConversion? GetConversionFrom(IValueType from)
     {
         if (from.NativeType == NativeType) return SelfConversion;
-        if (from is ScalarValueType fromScalar) return fromScalar.FillConnectionFactoryTo(fromGeneral);
+        if (from is ScalarValueType fromScalar) return fromScalar.ConversionToGeneral.Concat(fromGeneral);
 
-        var func = ConvertFrom.GetValueOrDefault(from.NativeType);
-        return func?.Invoke(this);
+        var conv = GeneralConversionsFrom.GetValueOrDefault(from.NativeType);
+        if (conv is not null) return conv.Concat(fromGeneral);
+
+        var result = from.GetConversionTo(this);
+        result ??= from.GetConversionTo(General)?.Concat(fromGeneral);
+
+        return result;
     }
 
-    public override ConvertConnectFunc? GetConversionTo(IValueType to)
+    public override IValueTypeConversion? GetConversionTo(IValueType to)
     {
         if (to.NativeType == NativeType) return SelfConversion;
-        if (to is ScalarValueType toScalar) return toScalar.FillConnectionFactoryFrom(toGeneral);
+        if (to is ScalarValueType toScalar) return toGeneral.Concat(toScalar.ConversionFromGeneral);
 
-        var func = ConvertTo.GetValueOrDefault(to.NativeType);
-        return func?.Invoke(this);
+        var conv = GeneralConversionsTo.GetValueOrDefault(to.NativeType);
+        if (conv is not null) return toGeneral.Concat(conv);
+
+        var result = to.GetConversionFrom(this);
+        if (result is null)
+        {
+            var then = to.GetConversionFrom(General);
+            if (then is not null) result = toGeneral.Concat(then);
+        }
+        return result;
     }
 
-
-    public static ConvertConnectFunc SelfConversion { get; } = ValueTypeUtils.CreateConnectionFactory<T, T>(v => v);
-
-    public override ConvertConnectFunc FillConnectionFactoryFrom<TFrom>(Func<TFrom, IConvertible> convertPrefix) =>
-        ValueTypeUtils.CreateConnectionFactory<TFrom, T>(from => fromGeneral.Invoke(convertPrefix.Invoke(from)));
-
-    public override ConvertConnectFunc FillConnectionFactoryTo<TTo>(Func<IConvertible, TTo> convertSuffix) =>
-        ValueTypeUtils.CreateConnectionFactory<T, TTo>(from => convertSuffix.Invoke(toGeneral.Invoke(from)));
+    public static IValueTypeConversion SelfConversion { get; } = ValueTypeConversion.SelfConversion<T>();
 }
