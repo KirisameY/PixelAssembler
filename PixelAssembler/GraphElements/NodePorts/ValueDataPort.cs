@@ -12,11 +12,20 @@ using PixelAssembler.Types.ValueTypes;
 
 namespace PixelAssembler.GraphElements.NodePorts;
 
-public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : IValueInPort<T>
+public class ValueInPort<T> : IValueNodeInPort<T>
 {
-    public IValueType Type => type;
-    public PaGraphNode Parent => parent;
-    public uint Index => index;
+    public ValueInPort(IValueType type, PaGraphNode parent, uint index)
+    {
+        if (typeof(T) != type.NativeType) throw new CreatingValueDataPortTypeMismatchException(type, typeof(T));
+        Type   = type;
+        Parent = parent;
+        Index  = index;
+    }
+
+    public IValueType Type { get; }
+    public PaGraphNode Parent { get; }
+    public uint Index { get; }
+
 
     [field: AllowNull, MaybeNull]
     IReadOnlyList<INodeConnection> INodeInPort.ConnectionsFrom => field ??= new Nullable2List<INodeConnection>(() => ConnectionFrom);
@@ -26,7 +35,7 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
     public bool TryCreateConnectionFrom(INodeOutPort from, [NotNullWhen(true)] out INodeConnection? connection)
     {
         connection = null;
-        if (from is not IValueOutPort valueOutPort) return false;
+        if (from is not IValueNodeOutPort valueOutPort) return false;
 
         if (!IValueType.TryGetConversion(valueOutPort.Type, Type, out var conversion)) return false;
         connection = conversion.CreateConnection(valueOutPort, this);
@@ -53,34 +62,43 @@ public class ValueInPort<T>(IValueType type, PaGraphNode parent, uint index) : I
     }
 
 
-    public Task<T>? RequestUpdate()
+    public Task<T>? RequestUpdate(Task startCommand)
     {
-        return ConnectionFrom?.RequestUpdate();
+        return ConnectionFrom?.RequestUpdate(startCommand);
     }
 
     public event Action<T>? UpdateNotified;
 }
 
-public class ValueOutPort<T>(IValueType type, PaGraphNode parent, uint index, IReadOnlyList<IValueConnectionFrom<T>> connections) : IValueOutPort<T>
+public class ValueOutPort<T> : IValueNodeOutPort<T>
 {
-    public IValueType Type { get; } = type;
-    public PaGraphNode Parent { get; } = parent;
-    public uint Index { get; } = index;
+    public ValueOutPort(IValueType type, PaGraphNode parent, uint index)
+    {
+        if (typeof(T) != type.NativeType) throw new CreatingValueDataPortTypeMismatchException(type, typeof(T));
+        Type   = type;
+        Parent = parent;
+        Index  = index;
+    }
+
+
+    public IValueType Type { get; }
+
+    public PaGraphNode Parent { get; }
+
+    public uint Index { get; }
 
 
     private readonly List<IValueConnectionFrom<T>> _connections = [];
 
-    public IReadOnlyList<IValueConnectionFrom<T>> ConnectionsTo
-    {
-        get => field ??= _connections.AsReadOnly();
-    } = connections;
+    [field: AllowNull, MaybeNull]
+    public IReadOnlyList<IValueConnectionFrom<T>> ConnectionsTo => field ??= _connections.AsReadOnly();
 
     public bool AddConnection(INodeConnection connection)
     {
         if (connection is not IValueConnectionFrom<T> valueConnection) return false;
         _connections.Add(valueConnection);
 
-        valueConnection.UpdateRequested = () => UpdateRequested?.Invoke();
+        valueConnection.UpdateRequested = s => UpdateRequested?.Invoke(s);
         return true;
     }
 
@@ -98,5 +116,9 @@ public class ValueOutPort<T>(IValueType type, PaGraphNode parent, uint index, IR
         ConnectionsTo.ForEach(connection => connection.NotifyUpdated(newValue));
     }
 
-    public Func<Task<T>?>? UpdateRequested { private get; set; }
+    public Func<Task, Task<T>?>? UpdateRequested { private get; set; }
 }
+
+public class CreatingValueDataPortTypeMismatchException(IValueType valueType, Type nativeType) : Exception(
+    $"Native type of creating ValuePort ({nativeType}) mismatched with ValueType {valueType}"
+);

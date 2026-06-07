@@ -15,15 +15,15 @@ public class ValueTypeConversion<TFrom, TTo>(Func<TFrom, TTo> convert) : IValueT
 {
     public Func<TFrom, TTo> Convert => convert;
 
-    public IValueConnection<TFrom, TTo> CreateConnection(IValueOutPort from, IValueInPort to)
+    public IValueConnection<TFrom, TTo> CreateConnection(IValueNodeOutPort from, IValueNodeInPort to)
     {
-        if (from is not IValueOutPort<TFrom> fromPort) throw new ValuePortNativeTypeMismatchedException(from);
-        if (to is not IValueInPort<TTo> toPort) throw new ValuePortNativeTypeMismatchedException(to);
+        if (from is not IValueNodeOutPort<TFrom> fromPort) throw new ValuePortNativeTypeMismatchedException(from);
+        if (to is not IValueNodeInPort<TTo> toPort) throw new ValuePortNativeTypeMismatchedException(to);
 
         return CreateConnection(fromPort, toPort);
     }
 
-    public IValueConnection<TFrom, TTo> CreateConnection(IValueOutPort<TFrom> from, IValueInPort<TTo> to)
+    public IValueConnection<TFrom, TTo> CreateConnection(IValueNodeOutPort<TFrom> from, IValueNodeInPort<TTo> to)
     {
         return new ValueDataConnection<TFrom, TTo>(from, to, convert);
     }

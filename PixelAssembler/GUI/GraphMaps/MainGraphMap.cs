@@ -2,7 +2,7 @@
 
 namespace PixelAssembler.GUI.GraphMaps;
 
-public partial class MainGraphMap : BaseGraphMap
+public partial class MainGraphMap : PaGraphMap
 {
     protected override bool OnConnectionRequest(GraphNode from, long fromPort, GraphNode to, long toPort)
     {

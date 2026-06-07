@@ -5,11 +5,11 @@ using PixelAssembler.GraphElements.NodePorts;
 
 namespace PixelAssembler.GraphElements.Connections;
 
-public record ValueDataConnection<TFrom, TTo>(IValueOutPort<TFrom> From, IValueInPort<TTo> To, Func<TFrom, TTo> Converter) : IValueConnection<TFrom, TTo>
+public record ValueDataConnection<TFrom, TTo>(IValueNodeOutPort<TFrom> From, IValueNodeInPort<TTo> To, Func<TFrom, TTo> Converter) : IValueConnection<TFrom, TTo>
 {
-    public Task<TTo>? RequestUpdate()
+    public Task<TTo>? RequestUpdate(Task startCommand)
     {
-        return UpdateRequested?.Invoke()?.ContinueWith(task => Converter.Invoke(task.Result));
+        return UpdateRequested?.Invoke(startCommand)?.ContinueWith(task => Converter.Invoke(task.Result));
     }
 
     public void NotifyUpdated(TFrom newValue)
@@ -18,7 +18,7 @@ public record ValueDataConnection<TFrom, TTo>(IValueOutPort<TFrom> From, IValueI
         UpdateNotified?.Invoke(converted);
     }
 
-    public Func<Task<TFrom>?>? UpdateRequested { private get; set; }
+    public Func<Task, Task<TFrom>?>? UpdateRequested { private get; set; }
 
     public event Action<TTo>? UpdateNotified;
 }

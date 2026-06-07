@@ -4,13 +4,13 @@ namespace PixelAssembler.GraphElements.Connections;
 
 public interface IValueConnectionFrom<T> : INodeConnection, IValueUpdateNotifier<T>
 {
-    public new IValueOutPort<T> From { get; }
+    public new IValueNodeOutPort<T> From { get; }
     INodeOutPort INodeConnection.From => From;
 }
 
 public interface IValueConnectionTo<T> : INodeConnection, IValueUpdateRequester<T>
 {
-    public new IValueInPort<T> To { get; }
+    public new IValueNodeInPort<T> To { get; }
     INodeInPort INodeConnection.To => To;
 }
 

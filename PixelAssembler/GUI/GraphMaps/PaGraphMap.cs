@@ -9,7 +9,7 @@ using PixelAssembler.GraphElements.NodePorts;
 
 namespace PixelAssembler.GUI.GraphMaps;
 
-public abstract partial class BaseGraphMap : GraphEdit
+public abstract partial class PaGraphMap : GraphEdit
 {
     public sealed override void _Ready()
     {

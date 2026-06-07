@@ -15,6 +15,10 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="KirisameY.Relinq" Version="0.1.0"/>
+        <PackageReference Include="KirisameY.Relinq" Version="0.1.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Updating\" />
     </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ public interface IValueTypeConversion
 {
     public Type From { get; }
     public Type To { get; }
-    public INodeConnection CreateConnection(IValueOutPort from, IValueInPort to);
+    public INodeConnection CreateConnection(IValueNodeOutPort from, IValueNodeInPort to);
     public IValueTypeConversion Concat(IValueTypeConversion then);
 }
 
@@ -29,10 +29,10 @@ public interface IValueTypeConversion<TFrom, TTo> : IValueTypeConversionFrom<TFr
 {
     public Func<TFrom, TTo> Convert { get; }
 
-    public new IValueConnection<TFrom, TTo> CreateConnection(IValueOutPort from, IValueInPort to);
-    public IValueConnection<TFrom, TTo> CreateConnection(IValueOutPort<TFrom> from, IValueInPort<TTo> to);
+    public new IValueConnection<TFrom, TTo> CreateConnection(IValueNodeOutPort from, IValueNodeInPort to);
+    public IValueConnection<TFrom, TTo> CreateConnection(IValueNodeOutPort<TFrom> from, IValueNodeInPort<TTo> to);
     public new IValueTypeConversion<TSource, TTo> AcceptConcat<TSource>(IValueTypeConversion<TSource, TFrom> before);
 
-    INodeConnection IValueTypeConversion.CreateConnection(IValueOutPort from, IValueInPort to) => CreateConnection(from, to);
+    INodeConnection IValueTypeConversion.CreateConnection(IValueNodeOutPort from, IValueNodeInPort to) => CreateConnection(from, to);
     IValueTypeConversion IValueTypeConversionFrom<TFrom>.AcceptConcat<TSource>(IValueTypeConversion<TSource, TFrom> before) => AcceptConcat(before);
 }

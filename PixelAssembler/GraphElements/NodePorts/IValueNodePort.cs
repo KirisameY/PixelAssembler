@@ -5,22 +5,22 @@ using PixelAssembler.Types.ValueTypes;
 
 namespace PixelAssembler.GraphElements.NodePorts;
 
-public interface IValuePort : INodePort
+public interface IValueNodePort : INodePort
 {
     public IValueType Type { get; }
 }
 
-public interface IValueInPort : IValuePort, INodeSingleInPort;
+public interface IValueNodeInPort : IValueNodePort, INodeSingleInPort;
 
-public interface IValueInPort<T> : IValueInPort, IValueUpdateRequester<T>
+public interface IValueNodeInPort<T> : IValueNodeInPort, IValueUpdateRequester<T>
 {
     public new IValueConnectionTo<T>? ConnectionFrom { get; }
     INodeConnection? INodeSingleInPort.ConnectionFrom => ConnectionFrom;
 }
 
-public interface IValueOutPort : IValuePort, INodeOutPort;
+public interface IValueNodeOutPort : IValueNodePort, INodeOutPort;
 
-public interface IValueOutPort<T> : IValueOutPort, IValueUpdateNotifier<T>
+public interface IValueNodeOutPort<T> : IValueNodeOutPort, IValueUpdateNotifier<T>
 {
     public new IReadOnlyList<IValueConnectionFrom<T>> ConnectionsTo { get; }
     IReadOnlyList<INodeConnection> INodeOutPort.ConnectionsTo => ConnectionsTo;
