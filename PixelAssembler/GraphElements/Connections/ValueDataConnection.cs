@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using PixelAssembler.GraphElements.GraphNodes;
 using PixelAssembler.GraphElements.NodePorts;
+using PixelAssembler.GUI.GraphMaps;
 
 namespace PixelAssembler.GraphElements.Connections;
 
@@ -21,4 +23,14 @@ public record ValueDataConnection<TFrom, TTo>(IValueNodeOutPort<TFrom> From, IVa
     public Func<Task, Task<TFrom>?>? UpdateRequested { private get; set; }
 
     public event Action<TTo>? UpdateNotified;
+
+    public void OnConnected()
+    {
+        if (From.Parent is MainGraphNode node) node.OutPortConnected(From);
+    }
+
+    public void OnDisConnected()
+    {
+        if (To.Parent is MainGraphNode node) node.InPortDisconnected(To);
+    }
 }

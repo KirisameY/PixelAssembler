@@ -68,6 +68,19 @@ public abstract partial class MainGraphNode : PaGraphNode
 
     protected abstract bool Update();
 
+    protected void StartUpdate(bool needLock = true)
+    {
+        Task.Run(() =>
+        {
+            if (needLock) _lock.Enter();
+            if (Update()) NotifyAllOutputs();
+            if (needLock) _lock.Exit();
+        }).ContinueWith(
+            task => GD.PrintErr("Error on updating node values", task.Exception),
+            TaskContinuationOptions.NotOnRanToCompletion
+        );
+    }
+
 
     private readonly ConditionalWeakTable<IValueNodeInPort, Func<Task, Task<bool>?>> _inPortUpdaters = [];
     private readonly ConditionalWeakTable<IValueNodeOutPort, object> _outPortValueGetters = [];

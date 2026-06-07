@@ -17,13 +17,15 @@ public abstract partial class PaGraphMap : GraphEdit
         {
             var fromNode = GetNode<GraphNode>(from.ToString());
             var toNode = GetNode<GraphNode>(to.ToString());
-            if (OnConnectionRequest(fromNode, fromPort, toNode, toPort)) ConnectNode(from, (int)fromPort, to, (int)toPort);
+            if (OnConnectionRequest(fromNode, fromPort, toNode, toPort))
+                ConnectNode(from, (int)fromPort, to, (int)toPort);
         };
         DisconnectionRequest += (from, fromPort, to, toPort) =>
         {
             var fromNode = GetNode<GraphNode>(from.ToString());
             var toNode = GetNode<GraphNode>(to.ToString());
-            if (OnDisconnectionRequest(fromNode, fromPort, toNode, toPort)) DisconnectNode(from, (int)fromPort, to, (int)toPort);
+            if (OnDisconnectionRequest(fromNode, fromPort, toNode, toPort))
+                DisconnectNode(from, (int)fromPort, to, (int)toPort);
         };
         AfterReady();
     }
@@ -41,6 +43,8 @@ public abstract partial class PaGraphMap : GraphEdit
     public bool ConnectPort(INodeOutPort from, INodeInPort to)
     {
         if (!to.TryCreateConnectionFrom(from, out var connection)) return false;
+
+        // release single port
         Action? reconnectOld = null;
         if (from is INodeSingleOutPort singleOutPort)
         {
@@ -61,6 +65,7 @@ public abstract partial class PaGraphMap : GraphEdit
             }
         }
 
+        // rollback on fall
         if (!from.AddConnection(connection) || !to.AddConnection(connection) ||
             !_connections.TryAdd((connection.From, connection.To), connection))
         {
@@ -72,7 +77,7 @@ public abstract partial class PaGraphMap : GraphEdit
 
         ConnectNode(from.Parent.Name, (int)from.Index, to.Parent.Name, (int)to.Index);
 
-        // todo: after-connection update here
+        connection.OnConnected();
 
         return true;
     }
@@ -86,7 +91,7 @@ public abstract partial class PaGraphMap : GraphEdit
         connection.From.RemoveConnection(connection);
         connection.To.RemoveConnection(connection);
 
-        // todo: after-disconnection update here
+        connection.OnDisConnected();
 
         return true;
     }
