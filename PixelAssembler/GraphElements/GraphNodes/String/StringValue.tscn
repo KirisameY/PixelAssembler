@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bmuwrvnbac16o"]
+
+[ext_resource type="Script" uid="uid://dmmcr6xk5lovd" path="res://GraphElements/GraphNodes/String/StringValueNode.cs" id="1_76uq4"]
+[ext_resource type="PackedScene" uid="uid://sy3rtb341hlv" path="res://GUI/GraphNodeParts/BiLabel.tscn" id="2_c1kl3"]
+
+[node name="StringValue" type="GraphNode" unique_id=177298049 node_paths=PackedStringArray("TextEdit")]
+resizable = true
+title = "String"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_76uq4")
+TextEdit = NodePath("TextEdit")
+
+[node name="BiLabel" parent="." unique_id=1624706221 instance=ExtResource("2_c1kl3")]
+custom_minimum_size = Vector2(110, 23)
+layout_mode = 2
+TextL = "Input"
+TextR = "Output"
+
+[node name="TextEdit" type="TextEdit" parent="." unique_id=281073861]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+
+[connection signal="text_changed" from="TextEdit" to="." method="OnTextEditOnTextChanged"]

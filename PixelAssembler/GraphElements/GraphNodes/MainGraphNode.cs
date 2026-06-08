@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -19,6 +20,21 @@ public abstract partial class MainGraphNode : PaGraphNode
     // 注：涉及状态的更改、读、写的部分需要上锁
     private readonly Lock _lock = new();
 
+
+    // protected MainGraphNode()
+    // {
+    //     // ReSharper disable once VirtualMemberCallInConstructor
+    //     InitializePorts();
+    // }
+    //
+    // protected abstract void InitializePorts();
+
+
+    public override Action<bool> BeforeConnectRequestFrom(INodeOutPort from)
+    {
+        return static _ => { };
+    }
+
     /// <returns><c>true</c> if update is needed, otherwise <c>false</c></returns>
     protected abstract bool WhenInPortDisconnected(IValueNodeInPort port);
 
@@ -29,7 +45,10 @@ public abstract partial class MainGraphNode : PaGraphNode
             lock (_lock)
             {
                 if (WhenInPortDisconnected(port) && Update())
+                {
+                    CallDeferred(GuiUpdateName);
                     NotifyAllOutputs();
+                }
             }
         }).ContinueWith(
             task => GD.PrintErr("Error on updating node values", task.Exception), // todo: 日后我们需要更好的异常回报机制
@@ -66,13 +85,19 @@ public abstract partial class MainGraphNode : PaGraphNode
     }
 
     protected abstract bool Update();
+    protected abstract void GuiUpdate();
+    private static readonly StringName GuiUpdateName = nameof(GuiUpdate);
 
     protected void StartUpdate(bool needLock = true)
     {
         Task.Run(() =>
         {
             if (needLock) _lock.Enter();
-            if (Update()) NotifyAllOutputs();
+            if (Update())
+            {
+                NotifyAllOutputs();
+                CallDeferred(GuiUpdateName);
+            }
             if (needLock) _lock.Exit();
         }).ContinueWith(
             task => GD.PrintErr("Error on updating node values", task.Exception),
@@ -93,7 +118,10 @@ public abstract partial class MainGraphNode : PaGraphNode
                 lock (_lock)
                 {
                     if (updateValue(v) && Update())
+                    {
                         NotifyAllOutputs();
+                        CallDeferred(GuiUpdateName);
+                    }
                 }
             });
         _inPortUpdaters.Add(
@@ -128,7 +156,11 @@ public abstract partial class MainGraphNode : PaGraphNode
                 if (!result.Result.Any(b => b)) return;
                 lock (node._lock)
                 {
-                    if (node.Update()) node.NotifyAllOutputs(list);
+                    if (node.Update())
+                    {
+                        node.NotifyAllOutputs(list);
+                        node.CallDeferred(GuiUpdateName);
+                    }
                 }
             }), list);
         }, this);
