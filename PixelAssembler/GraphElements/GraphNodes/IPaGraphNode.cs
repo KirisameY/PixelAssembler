@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Godot;
 
@@ -14,4 +15,6 @@ public interface IPaGraphNode
 
     public IReadOnlyList<INodeInPort?> InPorts { get; }
     public IReadOnlyList<INodeOutPort?> OutPorts { get; }
+
+    public Action<bool> BeforeConnectRequestFrom(INodeOutPort from);
 }

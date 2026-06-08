@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Godot;
 
@@ -12,4 +13,6 @@ public abstract partial class PaGraphNode : GraphNode, IPaGraphNode
     public PaGraphMap ParentMap => GetParent<PaGraphMap>();
     public abstract IReadOnlyList<INodeInPort?> InPorts { get; }
     public abstract IReadOnlyList<INodeOutPort?> OutPorts { get; }
+
+    public abstract Action<bool> BeforeConnectRequestFrom(INodeOutPort from);
 }

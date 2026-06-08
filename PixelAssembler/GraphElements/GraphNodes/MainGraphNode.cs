@@ -19,7 +19,6 @@ public abstract partial class MainGraphNode : PaGraphNode
     // 注：涉及状态的更改、读、写的部分需要上锁
     private readonly Lock _lock = new();
 
-
     /// <returns><c>true</c> if update is needed, otherwise <c>false</c></returns>
     protected abstract bool WhenInPortDisconnected(IValueNodeInPort port);
 

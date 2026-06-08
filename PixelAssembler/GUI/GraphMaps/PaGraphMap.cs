@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Godot;
 
 using PixelAssembler.GraphElements.Connections;
+using PixelAssembler.GraphElements.GraphNodes;
 using PixelAssembler.GraphElements.NodePorts;
 
 namespace PixelAssembler.GUI.GraphMaps;
@@ -13,27 +14,32 @@ public abstract partial class PaGraphMap : GraphEdit
 {
     public sealed override void _Ready()
     {
-        ConnectionRequest += (from, fromPort, to, toPort) =>
+        ConnectionRequest += (from, fromPortI, to, toPortI) =>
         {
-            var fromNode = GetNode<GraphNode>(from.ToString());
-            var toNode = GetNode<GraphNode>(to.ToString());
-            if (OnConnectionRequest(fromNode, fromPort, toNode, toPort))
-                ConnectNode(from, (int)fromPort, to, (int)toPort);
+            var fromNode = GetNode<IPaGraphNode>(from.ToString());
+            var toNode = GetNode<IPaGraphNode>(to.ToString());
+            var fromPort = fromNode.OutPorts[(int)fromPortI];
+            var toPort = toNode.InPorts[(int)toPortI];
+            if ((fromPort, toPort) is (not null, not null) && OnConnectionRequest(fromPort, toPort) && !fromNode.IsAfter(toNode))
+                ConnectPort(fromPort, toPort);
         };
-        DisconnectionRequest += (from, fromPort, to, toPort) =>
+        DisconnectionRequest += (from, fromPortI, to, toPortI) =>
         {
-            var fromNode = GetNode<GraphNode>(from.ToString());
-            var toNode = GetNode<GraphNode>(to.ToString());
-            if (OnDisconnectionRequest(fromNode, fromPort, toNode, toPort))
-                DisconnectNode(from, (int)fromPort, to, (int)toPort);
+            var fromNode = GetNode<IPaGraphNode>(from.ToString());
+            var toNode = GetNode<IPaGraphNode>(to.ToString());
+            var fromPort = fromNode.OutPorts[(int)fromPortI];
+            var toPort = toNode.InPorts[(int)toPortI];
+            if ((fromPort, toPort) is (not null, not null) && OnDisconnectionRequest(fromPort, toPort))
+                DisconnectPort(fromPort, toPort);
         };
+
         AfterReady();
     }
 
     protected virtual void AfterReady() { }
 
-    protected abstract bool OnConnectionRequest(GraphNode from, long fromPort, GraphNode to, long toPort);
-    protected abstract bool OnDisconnectionRequest(GraphNode from, long fromPort, GraphNode to, long toPort);
+    protected abstract bool OnConnectionRequest(INodeOutPort from, INodeInPort to);
+    protected abstract bool OnDisconnectionRequest(INodeOutPort from, INodeInPort to);
 
 
     private readonly Dictionary<(INodeOutPort from, INodeInPort to), INodeConnection> _connections = [];
