@@ -13,6 +13,8 @@ public interface IPaGraphNode
     public StringName Name { get; }
     public PaGraphMap ParentMap { get; }
 
+    public GraphNode AsNode { get; }
+
     public IReadOnlyList<INodeInPort?> InPorts { get; }
     public IReadOnlyList<INodeOutPort?> OutPorts { get; }
 

@@ -11,6 +11,8 @@ namespace PixelAssembler.GraphElements.GraphNodes;
 public abstract partial class PaGraphNode : GraphNode, IPaGraphNode
 {
     public PaGraphMap ParentMap => GetParent<PaGraphMap>();
+    public GraphNode AsNode => this;
+
     public abstract IReadOnlyList<INodeInPort?> InPorts { get; }
     public abstract IReadOnlyList<INodeOutPort?> OutPorts { get; }
 

@@ -15,6 +15,9 @@
     </ItemGroup>
     
     <ItemGroup>
+        <PackageReference Include="CaseConverter" Version="2.0.1" />
+        <PackageReference Include="KirisameY.GodotExtra" Version="0.1.0" />
+        <PackageReference Include="KirisameY.NotifiableCollections" Version="0.0.6" />
         <PackageReference Include="KirisameY.Relinq" Version="0.1.1" />
     </ItemGroup>
     

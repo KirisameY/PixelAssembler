@@ -7,6 +7,7 @@ using Godot;
 using PixelAssembler.GraphElements.Connections;
 using PixelAssembler.GraphElements.GraphNodes;
 using PixelAssembler.GraphElements.NodePorts;
+using PixelAssembler.GUI.PopupMenus;
 
 namespace PixelAssembler.GUI.GraphMaps;
 
@@ -33,10 +34,53 @@ public abstract partial class PaGraphMap : GraphEdit
                 DisconnectPort(fromPort, toPort);
         };
 
+        AddNodeMenu.NodeSelected += (sender, factory) =>
+        {
+            var node = factory.Creator.Invoke();
+            AddNode(node, _lastPopupPosition);
+        };
+
         AfterReady();
     }
 
     protected virtual void AfterReady() { }
+
+
+    #region Node
+
+    private readonly List<IPaGraphNode> _nodes = [];
+    public IReadOnlyList<IPaGraphNode> Nodes => field ??= _nodes.AsReadOnly();
+
+
+    public void AddNode(IPaGraphNode node, Vector2 position = default)
+    {
+        AddChild(node.AsNode);
+        node.AsNode.SetDeferred("position", position);
+        _nodes.Add(node);
+    }
+
+    public bool RemoveNode(IPaGraphNode node)
+    {
+        if (!_nodes.Remove(node)) return false;
+        RemoveChild(node.AsNode);
+        return true;
+    }
+
+    protected abstract AddGraphNodeMenu AddNodeMenu { get; }
+
+    public void OnPopupRequest(Vector2 position)
+    {
+        if (AddNodeMenu.Visible) return;
+        AddNodeMenu.PopupOnParent(new Rect2I((Vector2I)position, AddNodeMenu.Size));
+        _lastPopupPosition = position;
+    }
+
+    private Vector2 _lastPopupPosition;
+
+    #endregion
+
+
+    #region Port & Connection
 
     protected abstract bool OnConnectionRequest(INodeOutPort from, INodeInPort to);
     protected abstract bool OnDisconnectionRequest(INodeOutPort from, INodeInPort to);
@@ -103,4 +147,6 @@ public abstract partial class PaGraphMap : GraphEdit
     }
 
     public bool Disconnect(INodeConnection connection) => DisconnectPort(connection.From, connection.To);
+
+    #endregion
 }

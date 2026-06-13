@@ -20,6 +20,14 @@ config/icon="res://icon.svg"
 project/assembly_name="PixelAssembler"
 project/solution_directory=".."
 
+[file_customization]
+
+folder_colors={
+"res://@res/": "red",
+"res://GUI/": "teal",
+"res://GraphElements/": "blue"
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

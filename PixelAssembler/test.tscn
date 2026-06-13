@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bq5bbnrq1ymvg"]
 
-[ext_resource type="Script" uid="uid://b10d450lg7csw" path="res://GUI/GraphMaps/MainGraphMap.cs" id="1_37kl0"]
+[ext_resource type="PackedScene" uid="uid://cqds4ecvqlhgj" path="res://GUI/GraphMaps/MainGraphMap.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://bmuwrvnbac16o" path="res://GraphElements/GraphNodes/String/StringValue.tscn" id="2_8uh7m"]
 
 [sub_resource type="GDScript" id="GDScript_37kl0"]
@@ -59,31 +59,16 @@ func _draw():
 
 [node name="Control" type="Control" unique_id=537009600]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="MainGraphMap" type="GraphEdit" parent="." unique_id=2023007513]
-layout_mode = 0
-offset_left = 47.0
-offset_top = 40.0
-offset_right = 1093.0
-offset_bottom = 602.0
-grid_pattern = 1
-right_disconnects = true
-type_names = {
-0: ""
-}
-connections = Array[Dictionary]([{
-"from_node": &"GraphNode2",
-"from_port": 0,
-"keep_alive": true,
-"to_node": &"GraphNode",
-"to_port": 0
-}])
-minimap_enabled = false
-show_zoom_label = true
-script = ExtResource("1_37kl0")
+[node name="MainGraphMap2" parent="." unique_id=552108840 instance=ExtResource("1_6uqi0")]
+layout_mode = 1
 
-[node name="StringValue" parent="MainGraphMap" unique_id=177298049 instance=ExtResource("2_8uh7m")]
+[node name="StringValue" parent="MainGraphMap2" unique_id=177298049 instance=ExtResource("2_8uh7m")]
 layout_mode = 0
 offset_left = 114.0
 offset_top = 158.0
@@ -92,7 +77,7 @@ offset_bottom = 274.0
 mouse_filter = 1
 position_offset = Vector2(114, 158)
 
-[node name="StringValue2" parent="MainGraphMap" unique_id=1533676687 instance=ExtResource("2_8uh7m")]
+[node name="StringValue2" parent="MainGraphMap2" unique_id=1533676687 instance=ExtResource("2_8uh7m")]
 layout_mode = 0
 offset_left = 625.0
 offset_top = 110.0
@@ -101,7 +86,7 @@ offset_bottom = 226.0
 mouse_filter = 1
 position_offset = Vector2(625, 110)
 
-[node name="StringValue3" parent="MainGraphMap" unique_id=2018611735 instance=ExtResource("2_8uh7m")]
+[node name="StringValue3" parent="MainGraphMap2" unique_id=2018611735 instance=ExtResource("2_8uh7m")]
 layout_mode = 0
 offset_left = 407.0
 offset_top = 297.0

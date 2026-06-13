@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://fif0a6qqo0dx" path="res://GUI/PopupMenus/AddGraphNodeMenu.cs" id="1_1u5ci"]
 [ext_resource type="Texture2D" uid="uid://ci85hdwfeprv8" path="res://icon.svg" id="2_6evm5"]
+[ext_resource type="PackedScene" uid="uid://opks4scdbpsc" path="res://GUI/PopupMenus/NodeCreateListSection.tscn" id="2_n64hq"]
 
 [sub_resource type="Theme" id="Theme_oavss"]
 
 [node name="AddGraphNodeMenu" type="PopupPanel" unique_id=2032091498]
 oversampling_override = 1.0
 title = "Add Node..."
+position = Vector2i(0, 36)
 size = Vector2i(480, 320)
 visible = true
 unresizable = false
@@ -34,36 +36,20 @@ vertical_scroll_mode = 4
 scroll_deadzone = 1
 scroll_hint_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1107800547]
+[node name="ItemsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1107800547]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FoldableContainer" type="FoldableContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1402382856]
+[node name="NodeCreateListSection" parent="VBoxContainer/ScrollContainer/ItemsContainer" unique_id=487700767 instance=ExtResource("2_n64hq")]
+layout_mode = 2
+
+[node name="FoldableContainer2" type="FoldableContainer" parent="VBoxContainer/ScrollContainer/ItemsContainer" unique_id=453400808]
+visible = false
 layout_mode = 2
 title = "暗色调"
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer" unique_id=1401602447]
-layout_mode = 2
-max_text_lines = 3
-auto_height = true
-item_count = 6
-max_columns = 10
-fixed_column_width = 96
-icon_mode = 0
-fixed_icon_size = Vector2i(80, 80)
-item_0/text = "暗色调of a dsawer"
-item_0/icon = ExtResource("2_6evm5")
-item_1/text = "东奥"
-item_2/text = "复读"
-item_3/text = "阿福"
-item_4/text = "东奥"
-item_5/text = "东奥啊"
-
-[node name="FoldableContainer2" type="FoldableContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer" unique_id=453400808]
-layout_mode = 2
-title = "暗色调"
-
-[node name="ItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2" unique_id=1865685223]
+[node name="ItemList" type="ItemList" parent="VBoxContainer/ScrollContainer/ItemsContainer/FoldableContainer2" unique_id=1865685223]
 layout_mode = 2
 max_text_lines = 3
 auto_height = true
