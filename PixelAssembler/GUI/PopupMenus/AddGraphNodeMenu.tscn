@@ -37,11 +37,11 @@ scroll_deadzone = 1
 scroll_hint_mode = 1
 
 [node name="ItemsContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1107800547]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="NodeCreateListSection" parent="VBoxContainer/ScrollContainer/ItemsContainer" unique_id=487700767 instance=ExtResource("2_n64hq")]
+visible = false
 layout_mode = 2
 
 [node name="FoldableContainer2" type="FoldableContainer" parent="VBoxContainer/ScrollContainer/ItemsContainer" unique_id=453400808]

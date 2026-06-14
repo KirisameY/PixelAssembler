@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cqds4ecvqlhgj"]
 
 [ext_resource type="Script" uid="uid://b10d450lg7csw" path="res://GUI/GraphMaps/MainGraphMap.cs" id="1_5e2we"]
-[ext_resource type="PackedScene" uid="uid://c7m62iimql768" path="res://GUI/PopupMenus/AddGraphNodeMenu.tscn" id="2_4ctqr"]
 
 [node name="MainGraphMap" type="GraphEdit" unique_id=552108840]
 anchors_preset = 15
@@ -14,8 +13,5 @@ snapping_enabled = false
 right_disconnects = true
 show_zoom_label = true
 script = ExtResource("1_5e2we")
-
-[node name="AddGraphNodeMenu" parent="." unique_id=2032091498 instance=ExtResource("2_4ctqr")]
-visible = false
 
 [connection signal="popup_request" from="." to="." method="OnPopupRequest"]

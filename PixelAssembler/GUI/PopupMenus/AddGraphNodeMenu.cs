@@ -33,7 +33,7 @@ public partial class AddGraphNodeMenu : PopupPanel
     #region SubNodes
 
     private LineEdit SearchBox => field ??= GetNode<LineEdit>("VBoxContainer/SearchBox");
-    private HBoxContainer ItemsContainer => field ??= GetNode<HBoxContainer>("VBoxContainer/ScrollContainer/ItemsContainer");
+    private VBoxContainer ItemsContainer => field ??= GetNode<VBoxContainer>("VBoxContainer/ScrollContainer/ItemsContainer");
 
     #endregion
 
@@ -158,6 +158,7 @@ public partial class AddGraphNodeMenu : PopupPanel
         var result = NodeCreateListSection.Create(name, nodeFac =>
         {
             NodeSelected?.Invoke(this, nodeFac);
+            Hide();
         });
         ItemsContainer.AddChild(result);
         return result;

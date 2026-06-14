@@ -37,6 +37,7 @@ public partial class NodeCreateListSection : FoldableContainer
 
         void Send(long index)
         {
+            ItemList.Deselect((int)index);
             var nf = (GdWrapper<NodeFactory>)ItemList.GetItemMetadata((int)index);
             Activated?.Invoke(nf.Value);
         }

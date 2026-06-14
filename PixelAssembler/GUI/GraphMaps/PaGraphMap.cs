@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 using Godot;
 
+using KirisameY.NotifiableCollections.Collections;
+
+using PixelAssembler.Data;
 using PixelAssembler.GraphElements.Connections;
 using PixelAssembler.GraphElements.GraphNodes;
 using PixelAssembler.GraphElements.NodePorts;
@@ -34,11 +37,13 @@ public abstract partial class PaGraphMap : GraphEdit
                 DisconnectPort(fromPort, toPort);
         };
 
-        AddNodeMenu.NodeSelected += (sender, factory) =>
+        _addNodeMenu = AddGraphNodeMenu.CreateInstance(NodeFactories);
+        _addNodeMenu.NodeSelected += (_, factory) =>
         {
             var node = factory.Creator.Invoke();
-            AddNode(node, _lastPopupPosition);
+            AddNode(node, _lastPopupPosition + ScrollOffset);
         };
+        AddChild(_addNodeMenu);
 
         AfterReady();
     }
@@ -55,7 +60,7 @@ public abstract partial class PaGraphMap : GraphEdit
     public void AddNode(IPaGraphNode node, Vector2 position = default)
     {
         AddChild(node.AsNode);
-        node.AsNode.SetDeferred("position", position);
+        node.AsNode.PositionOffset = position;
         _nodes.Add(node);
     }
 
@@ -66,12 +71,14 @@ public abstract partial class PaGraphMap : GraphEdit
         return true;
     }
 
-    protected abstract AddGraphNodeMenu AddNodeMenu { get; }
+    private AddGraphNodeMenu? _addNodeMenu;
+
+    protected abstract IReadOnlyNotifiableDictionary<string, IReadOnlyNotifiableList<NodeFactory>> NodeFactories { get; }
 
     public void OnPopupRequest(Vector2 position)
     {
-        if (AddNodeMenu.Visible) return;
-        AddNodeMenu.PopupOnParent(new Rect2I((Vector2I)position, AddNodeMenu.Size));
+        if (_addNodeMenu?.Visible is true) return;
+        _addNodeMenu?.PopupOnParent(new Rect2I((Vector2I)position, _addNodeMenu.Size));
         _lastPopupPosition = position;
     }
 

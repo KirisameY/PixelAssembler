@@ -11,6 +11,16 @@ namespace PixelAssembler.GraphElements.GraphNodes.String;
 
 public partial class StringValueNode : MainGraphNode
 {
+    #region Factory
+
+    private StringValueNode() { }
+    private static PackedScene Scene => field ??= ResourceLoader.Load<PackedScene>("res://GraphElements/GraphNodes/String/StringValue.tscn");
+
+    public static StringValueNode Create() => Scene.Instantiate<StringValueNode>();
+
+    #endregion
+
+
     #region Ports
 
     private IValueNodeInPort<string> InPort => field ??= CreateInPort<string>(
