@@ -184,10 +184,10 @@ public partial class AddGraphNodeMenu : PopupPanel
     {
         base._Ready();
 
-        // temp for testing
-        CreateTween().TweenCallback(Callable.From(() =>
-        {
-            PopupCentered();
-        }));
+        // for testing
+        // CreateTween().TweenCallback(Callable.From(() =>
+        // {
+        //     PopupCentered();
+        // }));
     }
 }

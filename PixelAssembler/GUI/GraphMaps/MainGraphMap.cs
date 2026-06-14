@@ -1,5 +1,6 @@
 ﻿using Godot;
 
+using KirisameY.GenericUtils;
 using KirisameY.NotifiableCollections.Collections;
 
 using PixelAssembler.Data;
@@ -11,13 +12,8 @@ namespace PixelAssembler.GUI.GraphMaps;
 
 public partial class MainGraphMap : PaGraphMap
 {
-    protected override IReadOnlyNotifiableDictionary<string, IReadOnlyNotifiableList<NodeFactory>> NodeFactories => field ??= new NotifiableDictionary<string, IReadOnlyNotifiableList<NodeFactory>>
-    {
-        ["Asd"] = new NotifiableList<NodeFactory>
-        {
-            new("AsdFdsE", StringValueNode.Create)
-        }
-    };
+    protected override IReadOnlyNotifiableDictionary<string, IReadOnlyNotifiableList<NodeFactory>> NodeFactories => field ??=
+        Registries.NodeFactories.Main.AsType(TypeA.Of<IReadOnlyNotifiableList<NodeFactory>>());
 
     protected override bool OnConnectionRequest(INodeOutPort from, INodeInPort to)
     {

@@ -28,6 +28,10 @@ folder_colors={
 "res://GraphElements/": "blue"
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://@res/translations/nodes.en.translation", "res://@res/translations/nodes.zh.translation")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

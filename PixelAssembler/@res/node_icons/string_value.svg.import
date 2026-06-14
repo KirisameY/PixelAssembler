@@ -1,0 +1,21 @@
+[remap]
+
+importer="svg"
+type="DPITexture"
+uid="uid://db6b7q52v1ldo"
+path="res://.godot/imported/string_value.svg-ee4da0e2af4f081f519193ff1b01cf17.dpitex"
+
+[deps]
+
+source_file="res://@res/node_icons/string_value.svg"
+dest_files=["res://.godot/imported/string_value.svg-ee4da0e2af4f081f519193ff1b01cf17.dpitex"]
+
+[params]
+
+base_scale=1.0
+saturation=1.0
+color_map={
+Color(0.101960786, 0.101960786, 0.101960786, 1): Color(1, 1, 1, 1),
+Color(0.89492244, 0.89492244, 0.8949224, 1): Color(0.101960786, 0.101960786, 0.101960786, 1)
+}
+compress=true
